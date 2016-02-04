@@ -669,8 +669,13 @@ func (p *unmarshal) field(file *generator.FileDescriptor, msg *generator.Descrip
 		p.Out()
 		p.P(`}`)
 		if oneof {
+			casttyp := "v"
+			if gogoproto.IsCastType(field) {
+				prototyp := p.TypeName(p.ObjectNamed(field.GetTypeName()))
+				casttyp = "((*" + prototyp + ")(v))"
+			}
 			p.P(`v := &`, msgname, `{}`)
-			p.P(`if err := v.Unmarshal(data[iNdEx:postIndex]); err != nil {`)
+			p.P(`if err := `, casttyp, `.Unmarshal(data[iNdEx:postIndex]); err != nil {`)
 			p.In()
 			p.P(`return err`)
 			p.Out()
@@ -721,29 +726,55 @@ func (p *unmarshal) field(file *generator.FileDescriptor, msg *generator.Descrip
 			}
 			p.P(s, ` = `, v)
 		} else if repeated {
-			if nullable {
-				p.P(`m.`, fieldname, ` = append(m.`, fieldname, `, &`, msgname, `{})`)
-			} else {
-				p.P(`m.`, fieldname, ` = append(m.`, fieldname, `, `, msgname, `{})`)
+			casttyp := "m." + fieldname + "[len(m." + fieldname + ")-1]"
+			castmsgname := msgname
+			if gogoproto.IsCastType(field) {
+				prototyp := p.TypeName(p.ObjectNamed(field.GetTypeName()))
+				castmsgname, _ = p.GoType(msg, field)
+				castmsgname = strings.TrimPrefix(castmsgname, "[]")
+				castmsgname = strings.TrimPrefix(castmsgname, "*")
+				if nullable {
+					casttyp = "((*" + prototyp + ")(" + casttyp + "))"
+				} else {
+					casttyp = "((*" + prototyp + ")(&" + casttyp + "))"
+				}
 			}
-			p.P(`if err := m.`, fieldname, `[len(m.`, fieldname, `)-1].Unmarshal(data[iNdEx:postIndex]); err != nil {`)
+			if nullable {
+				p.P(`m.`, fieldname, ` = append(m.`, fieldname, `, &`, castmsgname, `{})`)
+			} else {
+				p.P(`m.`, fieldname, ` = append(m.`, fieldname, `, `, castmsgname, `{})`)
+			}
+			p.P(`if err := `, casttyp, `.Unmarshal(data[iNdEx:postIndex]); err != nil {`)
 			p.In()
 			p.P(`return err`)
 			p.Out()
 			p.P(`}`)
 		} else if nullable {
+			casttyp := "m." + fieldname
+			castmsgname := msgname
+			if gogoproto.IsCastType(field) {
+				prototyp := p.TypeName(p.ObjectNamed(field.GetTypeName()))
+				casttyp = "((*" + prototyp + ")(" + casttyp + "))"
+				castmsgname, _ = p.GoType(msg, field)
+				castmsgname = strings.TrimPrefix(castmsgname, "*")
+			}
 			p.P(`if m.`, fieldname, ` == nil {`)
 			p.In()
-			p.P(`m.`, fieldname, ` = &`, msgname, `{}`)
+			p.P(`m.`, fieldname, ` = &`, castmsgname, `{}`)
 			p.Out()
 			p.P(`}`)
-			p.P(`if err := m.`, fieldname, `.Unmarshal(data[iNdEx:postIndex]); err != nil {`)
+			p.P(`if err := `, casttyp, `.Unmarshal(data[iNdEx:postIndex]); err != nil {`)
 			p.In()
 			p.P(`return err`)
 			p.Out()
 			p.P(`}`)
 		} else {
-			p.P(`if err := m.`, fieldname, `.Unmarshal(data[iNdEx:postIndex]); err != nil {`)
+			casttyp := "m." + fieldname
+			if gogoproto.IsCastType(field) {
+				prototyp := p.TypeName(p.ObjectNamed(field.GetTypeName()))
+				casttyp = "((*" + prototyp + ")(&" + casttyp + "))"
+			}
+			p.P(`if err := `, casttyp, `.Unmarshal(data[iNdEx:postIndex]); err != nil {`)
 			p.In()
 			p.P(`return err`)
 			p.Out()

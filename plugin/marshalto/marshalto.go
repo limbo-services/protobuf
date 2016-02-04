@@ -918,15 +918,24 @@ func (p *marshalto) generateField(proto3 bool, numGen NumGen, file *generator.Fi
 			p.Out()
 			p.P(`}`)
 		} else if repeated {
+			casttyp := "msg"
+			if gogoproto.IsCastType(field) {
+				prototyp := p.TypeName(p.ObjectNamed(field.GetTypeName()))
+				if nullable {
+					casttyp = "((*" + prototyp + ")(" + casttyp + "))"
+				} else {
+					casttyp = "((*" + prototyp + ")(&" + casttyp + "))"
+				}
+			}
 			p.P(`for _, msg := range m.`, fieldname, ` {`)
 			p.In()
 			p.encodeKey(fieldNumber, wireType)
 			if protoSizer {
-				p.callVarint("msg.ProtoSize()")
+				p.callVarint(casttyp + ".ProtoSize()")
 			} else {
-				p.callVarint("msg.Size()")
+				p.callVarint(casttyp + ".Size()")
 			}
-			p.P(`n, err := msg.MarshalTo(data[i:])`)
+			p.P(`n, err := `, casttyp, `.MarshalTo(data[i:])`)
 			p.P(`if err != nil {`)
 			p.In()
 			p.P(`return 0, err`)
@@ -936,13 +945,18 @@ func (p *marshalto) generateField(proto3 bool, numGen NumGen, file *generator.Fi
 			p.Out()
 			p.P(`}`)
 		} else {
-			p.encodeKey(fieldNumber, wireType)
-			if protoSizer {
-				p.callVarint(`m.`, fieldname, `.ProtoSize()`)
-			} else {
-				p.callVarint(`m.`, fieldname, `.Size()`)
+			casttyp := `m.` + fieldname
+			if gogoproto.IsCastType(field) {
+				prototyp := p.TypeName(p.ObjectNamed(field.GetTypeName()))
+				if nullable {
+					casttyp = "((*" + prototyp + ")(" + casttyp + "))"
+				} else {
+					casttyp = "((*" + prototyp + ")(&" + casttyp + "))"
+				}
 			}
-			p.P(`n`, numGen.Next(), `, err := m.`, fieldname, `.MarshalTo(data[i:])`)
+			p.encodeKey(fieldNumber, wireType)
+			p.callVarint(casttyp, `.Size()`)
+			p.P(`n`, numGen.Next(), `, err := `, casttyp, `.MarshalTo(data[i:])`)
 			p.P(`if err != nil {`)
 			p.In()
 			p.P(`return 0, err`)

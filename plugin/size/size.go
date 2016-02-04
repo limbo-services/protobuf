@@ -119,13 +119,14 @@ package size
 
 import (
 	"fmt"
+	"strconv"
+	"strings"
+
 	"github.com/gogo/protobuf/gogoproto"
 	"github.com/gogo/protobuf/proto"
 	descriptor "github.com/gogo/protobuf/protoc-gen-gogo/descriptor"
 	"github.com/gogo/protobuf/protoc-gen-gogo/generator"
 	"github.com/gogo/protobuf/vanity"
-	"strconv"
-	"strings"
 )
 
 type size struct {
@@ -417,12 +418,30 @@ func (p *size) generateField(proto3 bool, file *generator.FileDescriptor, messag
 		} else if repeated {
 			p.P(`for _, e := range m.`, fieldname, ` { `)
 			p.In()
-			p.P(`l=e.`, sizeName, `()`)
+			if gogoproto.IsCastType(field) {
+				prototyp := p.TypeName(p.ObjectNamed(field.GetTypeName()))
+				if nullable {
+					p.P(`l=((*`, prototyp, `)(e)).`, sizeName, `()`)
+				} else {
+					p.P(`l=((*`, prototyp, `)(&e)).`, sizeName, `()`)
+				}
+			} else {
+				p.P(`l=e.Size()`)
+			}
 			p.P(`n+=`, strconv.Itoa(key), `+l+sov`, p.localName, `(uint64(l))`)
 			p.Out()
 			p.P(`}`)
 		} else {
-			p.P(`l=m.`, fieldname, `.`, sizeName, `()`)
+			if gogoproto.IsCastType(field) {
+				prototyp := p.TypeName(p.ObjectNamed(field.GetTypeName()))
+				if nullable {
+					p.P(`l=((*`, prototyp, `)(m.`, fieldname, `)).`, sizeName, `()`)
+				} else {
+					p.P(`l=((*`, prototyp, `)(&m.`, fieldname, `)).`, sizeName, `()`)
+				}
+			} else {
+				p.P(`l=m.`, fieldname, `.Size()`)
+			}
 			p.P(`n+=`, strconv.Itoa(key), `+l+sov`, p.localName, `(uint64(l))`)
 		}
 	case descriptor.FieldDescriptorProto_TYPE_BYTES:
