@@ -1130,6 +1130,10 @@ func (g *Generator) P(str ...interface{}) {
 
 // addInitf stores the given statement to be printed inside the file's init function.
 // The statement is given as a format specifier and arguments.
+func (g *Generator) AddInitf(stmt string, a ...interface{}) {
+	g.addInitf(stmt, a...)
+}
+
 func (g *Generator) addInitf(stmt string, a ...interface{}) {
 	g.init = append(g.init, fmt.Sprintf(stmt, a...))
 }
@@ -1237,10 +1241,11 @@ func (g *Generator) generate(file *FileDescriptor) {
 	for _, ext := range g.file.ext {
 		g.generateExtension(ext)
 	}
-	g.generateInitFunction()
 
 	// Run the plugins before the imports so we know which imports are necessary.
 	g.runPlugins(file)
+
+	g.generateInitFunction()
 
 	g.generateFileDescriptor(file)
 
