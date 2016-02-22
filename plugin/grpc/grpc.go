@@ -47,8 +47,9 @@ import (
 // Paths for packages used by code generated in this file,
 // relative to the import_prefix of the generator.Generator.
 const (
-	contextPkgPath = "golang.org/x/net/context"
-	grpcPkgPath    = "google.golang.org/grpc"
+	contextPkgPath  = "golang.org/x/net/context"
+	grpcPkgPath     = "google.golang.org/grpc"
+	gogogrpcPkgPath = "github.com/gogo/protobuf/gogogrpc"
 )
 
 func init() {
@@ -70,8 +71,9 @@ func (g *grpc) Name() string {
 // They may vary from the final path component of the import path
 // if the name is used by other packages.
 var (
-	contextPkg string
-	grpcPkg    string
+	contextPkg  string
+	grpcPkg     string
+	gogogrpcPkg string
 )
 
 // Init initializes the plugin.
@@ -79,6 +81,7 @@ func (g *grpc) Init(gen *generator.Generator) {
 	g.gen = gen
 	contextPkg = generator.RegisterUniquePackageName("context", nil)
 	grpcPkg = generator.RegisterUniquePackageName("grpc", nil)
+	gogogrpcPkg = generator.RegisterUniquePackageName("gogogrpc", nil)
 }
 
 // Given a type name defined in a .proto, return its object.
@@ -104,6 +107,7 @@ func (g *grpc) Generate(file *generator.FileDescriptor) {
 	g.P("// Reference imports to suppress errors if they are not otherwise used.")
 	g.P("var _ ", contextPkg, ".Context")
 	g.P("var _ ", grpcPkg, ".ClientConn")
+	g.P("var _ ", gogogrpcPkg, ".ServerOption")
 	g.P()
 	for i, service := range file.FileDescriptorProto.Service {
 		g.generateService(file, service, i)
@@ -118,6 +122,7 @@ func (g *grpc) GenerateImports(file *generator.FileDescriptor) {
 	g.P("import (")
 	g.P(contextPkg, " ", strconv.Quote(path.Join(g.gen.ImportPrefix, contextPkgPath)))
 	g.P(grpcPkg, " ", strconv.Quote(path.Join(g.gen.ImportPrefix, grpcPkgPath)))
+	g.P(gogogrpcPkg, " ", strconv.Quote(path.Join(g.gen.ImportPrefix, gogogrpcPkgPath)))
 	g.P(")")
 	g.P()
 }
@@ -193,8 +198,8 @@ func (g *grpc) generateService(file *generator.FileDescriptor, service *pb.Servi
 	g.P()
 
 	// Server registration.
-	g.P("func Register", servName, "Server(s *", grpcPkg, ".Server, srv ", serverType, ") {")
-	g.P("s.RegisterService(&", serviceDescVar, `, srv)`)
+	g.P("func Register", servName, "Server(s *", grpcPkg, ".Server, srv ", serverType, ", options ...", gogogrpcPkg, ".ServerOption) {")
+	g.P("s.RegisterService(", gogogrpcPkg, ".ApplyServerOptions(&", serviceDescVar, ", srv, options))")
 	g.P("}")
 	g.P()
 
