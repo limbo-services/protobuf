@@ -3048,6 +3048,17 @@ func CamelCase(s string) string {
 			c ^= ' ' // Make it a capital letter.
 		}
 		t = append(t, c) // Guaranteed not lower case.
+
+		// map (^|_)id($|_) to ID
+		if c == 'I' && i+2 == len(s) && s[i+1] == 'd' {
+			t = append(t, 'D')
+			i++
+		}
+		if c == 'I' && i+2 < len(s) && s[i+1] == 'd' && s[i+2] == '_' {
+			t = append(t, 'D')
+			i++
+		}
+
 		// Accept lower case sequence that follows.
 		for i+1 < len(s) && isASCIILower(s[i+1]) {
 			i++
