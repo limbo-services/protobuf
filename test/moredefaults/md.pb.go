@@ -14,11 +14,11 @@
 */
 package moredefaults
 
-import proto "github.com/gogo/protobuf/proto"
+import proto "limbo.services/protobuf/proto"
 import fmt "fmt"
 import math "math"
-import _ "github.com/gogo/protobuf/gogoproto"
-import test "github.com/gogo/protobuf/test/example"
+import _ "limbo.services/protobuf/gogoproto"
+import test "limbo.services/protobuf/test/example"
 
 import bytes "bytes"
 

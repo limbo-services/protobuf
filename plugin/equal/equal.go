@@ -1,5 +1,5 @@
 // Copyright (c) 2013, Vastech SA (PTY) LTD. All rights reserved.
-// http://github.com/gogo/protobuf
+// http://limbo.services/protobuf
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
@@ -48,11 +48,11 @@ The equal plugin also generates a test given it is enabled using one of the foll
 
 Let us look at:
 
-  github.com/gogo/protobuf/test/example/example.proto
+  limbo.services/protobuf/test/example/example.proto
 
 Btw all the output can be seen at:
 
-  github.com/gogo/protobuf/test/example/*
+  limbo.services/protobuf/test/example/*
 
 The following message:
 
@@ -61,7 +61,7 @@ The following message:
 
   message B {
 	optional A A = 1 [(gogoproto.nullable) = false, (gogoproto.embed) = true];
-	repeated bytes G = 2 [(gogoproto.customtype) = "github.com/gogo/protobuf/test/custom.Uint128", (gogoproto.nullable) = false];
+	repeated bytes G = 2 [(gogoproto.customtype) = "limbo.services/protobuf/test/custom.Uint128", (gogoproto.nullable) = false];
   }
 
 given to the equal plugin, will generate the following code:
@@ -161,11 +161,11 @@ and the following test code:
 package equal
 
 import (
-	"github.com/gogo/protobuf/gogoproto"
-	"github.com/gogo/protobuf/proto"
-	descriptor "github.com/gogo/protobuf/protoc-gen-gogo/descriptor"
-	"github.com/gogo/protobuf/protoc-gen-gogo/generator"
-	"github.com/gogo/protobuf/vanity"
+	"limbo.services/protobuf/gogoproto"
+	"limbo.services/protobuf/proto"
+	descriptor "limbo.services/protobuf/protoc-gen-gogo/descriptor"
+	"limbo.services/protobuf/protoc-gen-gogo/generator"
+	"limbo.services/protobuf/vanity"
 )
 
 type plugin struct {

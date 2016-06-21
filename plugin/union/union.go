@@ -1,5 +1,5 @@
 // Copyright (c) 2013, Vastech SA (PTY) LTD. All rights reserved.
-// http://github.com/gogo/protobuf
+// http://limbo.services/protobuf
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
@@ -52,11 +52,11 @@ The onlyone plugin also generates a test given it is enabled using one of the fo
 
 Lets look at:
 
-  github.com/gogo/protobuf/test/example/example.proto
+  limbo.services/protobuf/test/example/example.proto
 
 Btw all the output can be seen at:
 
-  github.com/gogo/protobuf/test/example/*
+  limbo.services/protobuf/test/example/*
 
 The following message:
 
@@ -109,8 +109,8 @@ and the following test code:
 package union
 
 import (
-	"github.com/gogo/protobuf/gogoproto"
-	"github.com/gogo/protobuf/protoc-gen-gogo/generator"
+	"limbo.services/protobuf/gogoproto"
+	"limbo.services/protobuf/protoc-gen-gogo/generator"
 )
 
 type union struct {

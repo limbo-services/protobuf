@@ -70,19 +70,19 @@
 */
 package test
 
-import proto "github.com/gogo/protobuf/proto"
+import proto "limbo.services/protobuf/proto"
 import fmt "fmt"
 import math "math"
-import _ "github.com/gogo/protobuf/gogoproto"
+import _ "limbo.services/protobuf/gogoproto"
 
-import github_com_gogo_protobuf_test_custom "github.com/gogo/protobuf/test/custom"
-import github_com_gogo_protobuf_test_custom_dash_type "github.com/gogo/protobuf/test/custom-dash-type"
+import github_com_gogo_protobuf_test_custom "limbo.services/protobuf/test/custom"
+import github_com_gogo_protobuf_test_custom_dash_type "limbo.services/protobuf/test/custom-dash-type"
 
 import bytes "bytes"
-import github_com_gogo_protobuf_sortkeys "github.com/gogo/protobuf/sortkeys"
+import github_com_gogo_protobuf_sortkeys "limbo.services/protobuf/sortkeys"
 
-import github_com_gogo_protobuf_protoc_gen_gogo_descriptor "github.com/gogo/protobuf/protoc-gen-gogo/descriptor"
-import github_com_gogo_protobuf_proto "github.com/gogo/protobuf/proto"
+import github_com_gogo_protobuf_protoc_gen_gogo_descriptor "limbo.services/protobuf/protoc-gen-gogo/descriptor"
+import github_com_gogo_protobuf_proto "limbo.services/protobuf/proto"
 import compress_gzip "compress/gzip"
 import io_ioutil "io/ioutil"
 
@@ -527,7 +527,7 @@ func (*NinNestedStruct) Descriptor() ([]byte, []int) { return fileDescriptorThet
 
 type NidOptCustom struct {
 	Id               Uuid                                         `protobuf:"bytes,1,opt,name=Id,json=id,customtype=Uuid" json:"Id"`
-	Value            github_com_gogo_protobuf_test_custom.Uint128 `protobuf:"bytes,2,opt,name=Value,json=value,customtype=github.com/gogo/protobuf/test/custom.Uint128" json:"Value"`
+	Value            github_com_gogo_protobuf_test_custom.Uint128 `protobuf:"bytes,2,opt,name=Value,json=value,customtype=limbo.services/protobuf/test/custom.Uint128" json:"Value"`
 	XXX_unrecognized []byte                                       `json:"-"`
 }
 
@@ -536,7 +536,7 @@ func (*NidOptCustom) ProtoMessage()               {}
 func (*NidOptCustom) Descriptor() ([]byte, []int) { return fileDescriptorThetest, []int{14} }
 
 type CustomDash struct {
-	Value            *github_com_gogo_protobuf_test_custom_dash_type.Bytes `protobuf:"bytes,1,opt,name=Value,json=value,customtype=github.com/gogo/protobuf/test/custom-dash-type.Bytes" json:"Value,omitempty"`
+	Value            *github_com_gogo_protobuf_test_custom_dash_type.Bytes `protobuf:"bytes,1,opt,name=Value,json=value,customtype=limbo.services/protobuf/test/custom-dash-type.Bytes" json:"Value,omitempty"`
 	XXX_unrecognized []byte                                                `json:"-"`
 }
 
@@ -546,7 +546,7 @@ func (*CustomDash) Descriptor() ([]byte, []int) { return fileDescriptorThetest, 
 
 type NinOptCustom struct {
 	Id               *Uuid                                         `protobuf:"bytes,1,opt,name=Id,json=id,customtype=Uuid" json:"Id,omitempty"`
-	Value            *github_com_gogo_protobuf_test_custom.Uint128 `protobuf:"bytes,2,opt,name=Value,json=value,customtype=github.com/gogo/protobuf/test/custom.Uint128" json:"Value,omitempty"`
+	Value            *github_com_gogo_protobuf_test_custom.Uint128 `protobuf:"bytes,2,opt,name=Value,json=value,customtype=limbo.services/protobuf/test/custom.Uint128" json:"Value,omitempty"`
 	XXX_unrecognized []byte                                        `json:"-"`
 }
 
@@ -556,7 +556,7 @@ func (*NinOptCustom) Descriptor() ([]byte, []int) { return fileDescriptorThetest
 
 type NidRepCustom struct {
 	Id               []Uuid                                         `protobuf:"bytes,1,rep,name=Id,json=id,customtype=Uuid" json:"Id"`
-	Value            []github_com_gogo_protobuf_test_custom.Uint128 `protobuf:"bytes,2,rep,name=Value,json=value,customtype=github.com/gogo/protobuf/test/custom.Uint128" json:"Value"`
+	Value            []github_com_gogo_protobuf_test_custom.Uint128 `protobuf:"bytes,2,rep,name=Value,json=value,customtype=limbo.services/protobuf/test/custom.Uint128" json:"Value"`
 	XXX_unrecognized []byte                                         `json:"-"`
 }
 
@@ -566,7 +566,7 @@ func (*NidRepCustom) Descriptor() ([]byte, []int) { return fileDescriptorThetest
 
 type NinRepCustom struct {
 	Id               []Uuid                                         `protobuf:"bytes,1,rep,name=Id,json=id,customtype=Uuid" json:"Id,omitempty"`
-	Value            []github_com_gogo_protobuf_test_custom.Uint128 `protobuf:"bytes,2,rep,name=Value,json=value,customtype=github.com/gogo/protobuf/test/custom.Uint128" json:"Value,omitempty"`
+	Value            []github_com_gogo_protobuf_test_custom.Uint128 `protobuf:"bytes,2,rep,name=Value,json=value,customtype=limbo.services/protobuf/test/custom.Uint128" json:"Value,omitempty"`
 	XXX_unrecognized []byte                                         `json:"-"`
 }
 
@@ -1194,9 +1194,9 @@ func (*CustomNameNinStruct) Descriptor() ([]byte, []int) { return fileDescriptor
 
 type CustomNameCustomType struct {
 	FieldA           *Uuid                                          `protobuf:"bytes,1,opt,name=Id,json=id,customtype=Uuid" json:"Id,omitempty"`
-	FieldB           *github_com_gogo_protobuf_test_custom.Uint128  `protobuf:"bytes,2,opt,name=Value,json=value,customtype=github.com/gogo/protobuf/test/custom.Uint128" json:"Value,omitempty"`
+	FieldB           *github_com_gogo_protobuf_test_custom.Uint128  `protobuf:"bytes,2,opt,name=Value,json=value,customtype=limbo.services/protobuf/test/custom.Uint128" json:"Value,omitempty"`
 	FieldC           []Uuid                                         `protobuf:"bytes,3,rep,name=Ids,json=ids,customtype=Uuid" json:"Ids,omitempty"`
-	FieldD           []github_com_gogo_protobuf_test_custom.Uint128 `protobuf:"bytes,4,rep,name=Values,json=values,customtype=github.com/gogo/protobuf/test/custom.Uint128" json:"Values,omitempty"`
+	FieldD           []github_com_gogo_protobuf_test_custom.Uint128 `protobuf:"bytes,4,rep,name=Values,json=values,customtype=limbo.services/protobuf/test/custom.Uint128" json:"Values,omitempty"`
 	XXX_unrecognized []byte                                         `json:"-"`
 }
 

@@ -14,15 +14,15 @@
 */
 package casttype
 
-import proto "github.com/gogo/protobuf/proto"
+import proto "limbo.services/protobuf/proto"
 import fmt "fmt"
 import math "math"
-import _ "github.com/gogo/protobuf/gogoproto"
+import _ "limbo.services/protobuf/gogoproto"
 
-import github_com_gogo_protobuf_test_casttype "github.com/gogo/protobuf/test/casttype"
+import github_com_gogo_protobuf_test_casttype "limbo.services/protobuf/test/casttype"
 
-import github_com_gogo_protobuf_protoc_gen_gogo_descriptor "github.com/gogo/protobuf/protoc-gen-gogo/descriptor"
-import github_com_gogo_protobuf_proto "github.com/gogo/protobuf/proto"
+import github_com_gogo_protobuf_protoc_gen_gogo_descriptor "limbo.services/protobuf/protoc-gen-gogo/descriptor"
+import github_com_gogo_protobuf_proto "limbo.services/protobuf/proto"
 import compress_gzip "compress/gzip"
 import bytes "bytes"
 import io_ioutil "io/ioutil"
@@ -31,7 +31,7 @@ import strings "strings"
 import sort "sort"
 import strconv "strconv"
 import reflect "reflect"
-import github_com_gogo_protobuf_sortkeys "github.com/gogo/protobuf/sortkeys"
+import github_com_gogo_protobuf_sortkeys "limbo.services/protobuf/sortkeys"
 
 import errors "errors"
 
@@ -49,19 +49,19 @@ const _ = proto.GoGoProtoPackageIsVersion1
 type Castaway struct {
 	Int32Ptr         *int32                                                                                                      `protobuf:"varint,1,opt,name=Int32Ptr,json=int32Ptr,casttype=int32" json:"Int32Ptr,omitempty"`
 	Int32            int32                                                                                                       `protobuf:"varint,2,opt,name=Int32,json=int32,casttype=int32" json:"Int32"`
-	MyUint64Ptr      *github_com_gogo_protobuf_test_casttype.MyUint64Type                                                        `protobuf:"varint,3,opt,name=MyUint64Ptr,json=myUint64Ptr,casttype=github.com/gogo/protobuf/test/casttype.MyUint64Type" json:"MyUint64Ptr,omitempty"`
-	MyUint64         github_com_gogo_protobuf_test_casttype.MyUint64Type                                                         `protobuf:"varint,4,opt,name=MyUint64,json=myUint64,casttype=github.com/gogo/protobuf/test/casttype.MyUint64Type" json:"MyUint64"`
-	MyFloat32Ptr     *github_com_gogo_protobuf_test_casttype.MyFloat32Type                                                       `protobuf:"fixed32,5,opt,name=MyFloat32Ptr,json=myFloat32Ptr,casttype=github.com/gogo/protobuf/test/casttype.MyFloat32Type" json:"MyFloat32Ptr,omitempty"`
-	MyFloat32        github_com_gogo_protobuf_test_casttype.MyFloat32Type                                                        `protobuf:"fixed32,6,opt,name=MyFloat32,json=myFloat32,casttype=github.com/gogo/protobuf/test/casttype.MyFloat32Type" json:"MyFloat32"`
-	MyFloat64Ptr     *github_com_gogo_protobuf_test_casttype.MyFloat64Type                                                       `protobuf:"fixed64,7,opt,name=MyFloat64Ptr,json=myFloat64Ptr,casttype=github.com/gogo/protobuf/test/casttype.MyFloat64Type" json:"MyFloat64Ptr,omitempty"`
-	MyFloat64        github_com_gogo_protobuf_test_casttype.MyFloat64Type                                                        `protobuf:"fixed64,8,opt,name=MyFloat64,json=myFloat64,casttype=github.com/gogo/protobuf/test/casttype.MyFloat64Type" json:"MyFloat64"`
-	MyBytes          github_com_gogo_protobuf_test_casttype.Bytes                                                                `protobuf:"bytes,9,opt,name=MyBytes,json=myBytes,casttype=github.com/gogo/protobuf/test/casttype.Bytes" json:"MyBytes,omitempty"`
+	MyUint64Ptr      *github_com_gogo_protobuf_test_casttype.MyUint64Type                                                        `protobuf:"varint,3,opt,name=MyUint64Ptr,json=myUint64Ptr,casttype=limbo.services/protobuf/test/casttype.MyUint64Type" json:"MyUint64Ptr,omitempty"`
+	MyUint64         github_com_gogo_protobuf_test_casttype.MyUint64Type                                                         `protobuf:"varint,4,opt,name=MyUint64,json=myUint64,casttype=limbo.services/protobuf/test/casttype.MyUint64Type" json:"MyUint64"`
+	MyFloat32Ptr     *github_com_gogo_protobuf_test_casttype.MyFloat32Type                                                       `protobuf:"fixed32,5,opt,name=MyFloat32Ptr,json=myFloat32Ptr,casttype=limbo.services/protobuf/test/casttype.MyFloat32Type" json:"MyFloat32Ptr,omitempty"`
+	MyFloat32        github_com_gogo_protobuf_test_casttype.MyFloat32Type                                                        `protobuf:"fixed32,6,opt,name=MyFloat32,json=myFloat32,casttype=limbo.services/protobuf/test/casttype.MyFloat32Type" json:"MyFloat32"`
+	MyFloat64Ptr     *github_com_gogo_protobuf_test_casttype.MyFloat64Type                                                       `protobuf:"fixed64,7,opt,name=MyFloat64Ptr,json=myFloat64Ptr,casttype=limbo.services/protobuf/test/casttype.MyFloat64Type" json:"MyFloat64Ptr,omitempty"`
+	MyFloat64        github_com_gogo_protobuf_test_casttype.MyFloat64Type                                                        `protobuf:"fixed64,8,opt,name=MyFloat64,json=myFloat64,casttype=limbo.services/protobuf/test/casttype.MyFloat64Type" json:"MyFloat64"`
+	MyBytes          github_com_gogo_protobuf_test_casttype.Bytes                                                                `protobuf:"bytes,9,opt,name=MyBytes,json=myBytes,casttype=limbo.services/protobuf/test/casttype.Bytes" json:"MyBytes,omitempty"`
 	NormalBytes      []byte                                                                                                      `protobuf:"bytes,10,opt,name=NormalBytes,json=normalBytes" json:"NormalBytes,omitempty"`
-	MyUint64S        []github_com_gogo_protobuf_test_casttype.MyUint64Type                                                       `protobuf:"varint,11,rep,name=MyUint64s,json=myUint64s,casttype=github.com/gogo/protobuf/test/casttype.MyUint64Type" json:"MyUint64s,omitempty"`
-	MyMap            github_com_gogo_protobuf_test_casttype.MyMapType                                                            `protobuf:"bytes,12,rep,name=MyMap,json=myMap,casttype=github.com/gogo/protobuf/test/casttype.MyMapType" json:"MyMap,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"varint,2,opt,name=value"`
-	MyCustomMap      map[github_com_gogo_protobuf_test_casttype.MyStringType]github_com_gogo_protobuf_test_casttype.MyUint64Type `protobuf:"bytes,13,rep,name=MyCustomMap,json=myCustomMap,castkey=github.com/gogo/protobuf/test/casttype.MyStringType,castvalue=github.com/gogo/protobuf/test/casttype.MyUint64Type" json:"MyCustomMap,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"varint,2,opt,name=value"`
-	MyNullableMap    map[github_com_gogo_protobuf_test_casttype.MyInt32Type]*Wilson                                              `protobuf:"bytes,14,rep,name=MyNullableMap,json=myNullableMap,castkey=github.com/gogo/protobuf/test/casttype.MyInt32Type" json:"MyNullableMap,omitempty" protobuf_key:"varint,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	MyEmbeddedMap    map[github_com_gogo_protobuf_test_casttype.MyInt32Type]Wilson                                               `protobuf:"bytes,15,rep,name=MyEmbeddedMap,json=myEmbeddedMap,castkey=github.com/gogo/protobuf/test/casttype.MyInt32Type" json:"MyEmbeddedMap" protobuf_key:"varint,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	MyUint64S        []github_com_gogo_protobuf_test_casttype.MyUint64Type                                                       `protobuf:"varint,11,rep,name=MyUint64s,json=myUint64s,casttype=limbo.services/protobuf/test/casttype.MyUint64Type" json:"MyUint64s,omitempty"`
+	MyMap            github_com_gogo_protobuf_test_casttype.MyMapType                                                            `protobuf:"bytes,12,rep,name=MyMap,json=myMap,casttype=limbo.services/protobuf/test/casttype.MyMapType" json:"MyMap,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"varint,2,opt,name=value"`
+	MyCustomMap      map[github_com_gogo_protobuf_test_casttype.MyStringType]github_com_gogo_protobuf_test_casttype.MyUint64Type `protobuf:"bytes,13,rep,name=MyCustomMap,json=myCustomMap,castkey=limbo.services/protobuf/test/casttype.MyStringType,castvalue=limbo.services/protobuf/test/casttype.MyUint64Type" json:"MyCustomMap,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"varint,2,opt,name=value"`
+	MyNullableMap    map[github_com_gogo_protobuf_test_casttype.MyInt32Type]*Wilson                                              `protobuf:"bytes,14,rep,name=MyNullableMap,json=myNullableMap,castkey=limbo.services/protobuf/test/casttype.MyInt32Type" json:"MyNullableMap,omitempty" protobuf_key:"varint,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	MyEmbeddedMap    map[github_com_gogo_protobuf_test_casttype.MyInt32Type]Wilson                                               `protobuf:"bytes,15,rep,name=MyEmbeddedMap,json=myEmbeddedMap,castkey=limbo.services/protobuf/test/casttype.MyInt32Type" json:"MyEmbeddedMap" protobuf_key:"varint,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	XXX_unrecognized []byte                                                                                                      `json:"-"`
 }
 

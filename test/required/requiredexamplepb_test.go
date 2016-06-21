@@ -1,8 +1,8 @@
 package required
 
 import (
-	"github.com/gogo/protobuf/proto"
-	"github.com/gogo/protobuf/test"
+	"limbo.services/protobuf/proto"
+	"limbo.services/protobuf/test"
 	"math/rand"
 	"reflect"
 	"strconv"

@@ -1,5 +1,5 @@
 // Copyright (c) 2013, Vastech SA (PTY) LTD. All rights reserved.
-// http://github.com/gogo/protobuf
+// http://limbo.services/protobuf
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
@@ -55,11 +55,11 @@ And benchmarks given it is enabled using one of the following extensions:
 
 Let us look at:
 
-  github.com/gogo/protobuf/test/example/example.proto
+  limbo.services/protobuf/test/example/example.proto
 
 Btw all the output can be seen at:
 
-  github.com/gogo/protobuf/test/example/*
+  limbo.services/protobuf/test/example/*
 
 The following message:
 
@@ -68,7 +68,7 @@ option (gogoproto.marshaler_all) = true;
 message B {
 	option (gogoproto.description) = true;
 	optional A A = 1 [(gogoproto.nullable) = false, (gogoproto.embed) = true];
-	repeated bytes G = 2 [(gogoproto.customtype) = "github.com/gogo/protobuf/test/custom.Uint128", (gogoproto.nullable) = false];
+	repeated bytes G = 2 [(gogoproto.customtype) = "limbo.services/protobuf/test/custom.Uint128", (gogoproto.nullable) = false];
 }
 
 given to the marshalto plugin, will generate the following code:
@@ -137,11 +137,11 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/gogo/protobuf/gogoproto"
-	"github.com/gogo/protobuf/proto"
-	descriptor "github.com/gogo/protobuf/protoc-gen-gogo/descriptor"
-	"github.com/gogo/protobuf/protoc-gen-gogo/generator"
-	"github.com/gogo/protobuf/vanity"
+	"limbo.services/protobuf/gogoproto"
+	"limbo.services/protobuf/proto"
+	descriptor "limbo.services/protobuf/protoc-gen-gogo/descriptor"
+	"limbo.services/protobuf/protoc-gen-gogo/generator"
+	"limbo.services/protobuf/vanity"
 )
 
 type NumGen interface {
@@ -943,15 +943,24 @@ func (p *marshalto) generateField(proto3 bool, numGen NumGen, file *generator.Fi
 			p.Out()
 			p.P(`}`)
 		} else if repeated {
+			casttyp := "msg"
+			if gogoproto.IsCastType(field) {
+				prototyp := p.TypeName(p.ObjectNamed(field.GetTypeName()))
+				if nullable {
+					casttyp = "((*" + prototyp + ")(" + casttyp + "))"
+				} else {
+					casttyp = "((*" + prototyp + ")(&" + casttyp + "))"
+				}
+			}
 			p.P(`for _, msg := range m.`, fieldname, ` {`)
 			p.In()
 			p.encodeKey(fieldNumber, wireType)
 			if protoSizer {
-				p.callVarint("msg.ProtoSize()")
+				p.callVarint(casttyp + ".ProtoSize()")
 			} else {
-				p.callVarint("msg.Size()")
+				p.callVarint(casttyp + ".Size()")
 			}
-			p.P(`n, err := msg.MarshalTo(data[i:])`)
+			p.P(`n, err := `, casttyp, `.MarshalTo(data[i:])`)
 			p.P(`if err != nil {`)
 			p.In()
 			p.P(`return 0, err`)
@@ -961,13 +970,22 @@ func (p *marshalto) generateField(proto3 bool, numGen NumGen, file *generator.Fi
 			p.Out()
 			p.P(`}`)
 		} else {
+			casttyp := `m.` + fieldname
+			if gogoproto.IsCastType(field) {
+				prototyp := p.TypeName(p.ObjectNamed(field.GetTypeName()))
+				if nullable {
+					casttyp = "((*" + prototyp + ")(" + casttyp + "))"
+				} else {
+					casttyp = "((*" + prototyp + ")(&" + casttyp + "))"
+				}
+			}
 			p.encodeKey(fieldNumber, wireType)
 			if protoSizer {
-				p.callVarint(`m.`, fieldname, `.ProtoSize()`)
+				p.callVarint(casttyp + ".ProtoSize()")
 			} else {
-				p.callVarint(`m.`, fieldname, `.Size()`)
+				p.callVarint(casttyp + ".Size()")
 			}
-			p.P(`n`, numGen.Next(), `, err := m.`, fieldname, `.MarshalTo(data[i:])`)
+			p.P(`n`, numGen.Next(), `, err := `, casttyp, `.MarshalTo(data[i:])`)
 			p.P(`if err != nil {`)
 			p.In()
 			p.P(`return 0, err`)
@@ -1141,8 +1159,8 @@ func (p *marshalto) Generate(file *generator.FileDescriptor) {
 	p.localName = generator.FileName(file)
 
 	p.mathPkg = p.NewImport("math")
-	p.sortKeysPkg = p.NewImport("github.com/gogo/protobuf/sortkeys")
-	p.protoPkg = p.NewImport("github.com/gogo/protobuf/proto")
+	p.sortKeysPkg = p.NewImport("limbo.services/protobuf/sortkeys")
+	p.protoPkg = p.NewImport("limbo.services/protobuf/proto")
 	if !gogoproto.ImportsGoGoProto(file.FileDescriptorProto) {
 		p.protoPkg = p.NewImport("github.com/golang/protobuf/proto")
 	}

@@ -15,10 +15,10 @@ It has these top-level messages:
 */
 package proto3_proto
 
-import proto "github.com/gogo/protobuf/proto"
+import proto "limbo.services/protobuf/proto"
 import fmt "fmt"
 import math "math"
-import testdata "github.com/gogo/protobuf/proto/testdata"
+import testdata "limbo.services/protobuf/proto/testdata"
 
 // Reference imports to suppress errors if they are not otherwise used.
 var _ = proto.Marshal

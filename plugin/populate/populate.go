@@ -1,5 +1,5 @@
 // Copyright (c) 2013, Vastech SA (PTY) LTD. All rights reserved.
-// http://github.com/gogo/protobuf
+// http://limbo.services/protobuf
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
@@ -35,11 +35,11 @@ It is enabled by the following extensions:
 
 Let us look at:
 
-  github.com/gogo/protobuf/test/example/example.proto
+  limbo.services/protobuf/test/example/example.proto
 
 Btw all the output can be seen at:
 
-  github.com/gogo/protobuf/test/example/*
+  limbo.services/protobuf/test/example/*
 
 The following message:
 
@@ -47,7 +47,7 @@ The following message:
 
   message B {
 	optional A A = 1 [(gogoproto.nullable) = false, (gogoproto.embed) = true];
-	repeated bytes G = 2 [(gogoproto.customtype) = "github.com/gogo/protobuf/test/custom.Uint128", (gogoproto.nullable) = false];
+	repeated bytes G = 2 [(gogoproto.customtype) = "limbo.services/protobuf/test/custom.Uint128", (gogoproto.nullable) = false];
   }
 
 given to the populate plugin, will generate code the following code:
@@ -83,11 +83,11 @@ package populate
 
 import (
 	"fmt"
-	"github.com/gogo/protobuf/gogoproto"
-	"github.com/gogo/protobuf/proto"
-	descriptor "github.com/gogo/protobuf/protoc-gen-gogo/descriptor"
-	"github.com/gogo/protobuf/protoc-gen-gogo/generator"
-	"github.com/gogo/protobuf/vanity"
+	"limbo.services/protobuf/gogoproto"
+	"limbo.services/protobuf/proto"
+	descriptor "limbo.services/protobuf/protoc-gen-gogo/descriptor"
+	"limbo.services/protobuf/protoc-gen-gogo/generator"
+	"limbo.services/protobuf/vanity"
 	"math"
 	"strconv"
 	"strings"
@@ -484,7 +484,7 @@ func (p *plugin) Generate(file *generator.FileDescriptor) {
 	proto3 := gogoproto.IsProto3(file.FileDescriptorProto)
 
 	p.localName = generator.FileName(file)
-	protoPkg := p.NewImport("github.com/gogo/protobuf/proto")
+	protoPkg := p.NewImport("limbo.services/protobuf/proto")
 	if !gogoproto.ImportsGoGoProto(file.FileDescriptorProto) {
 		protoPkg = p.NewImport("github.com/golang/protobuf/proto")
 	}

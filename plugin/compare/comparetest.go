@@ -1,5 +1,5 @@
 // Copyright (c) 2013, Vastech SA (PTY) LTD. All rights reserved.
-// http://github.com/gogo/protobuf
+// http://limbo.services/protobuf
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
@@ -27,9 +27,9 @@
 package compare
 
 import (
-	"github.com/gogo/protobuf/gogoproto"
-	"github.com/gogo/protobuf/plugin/testgen"
-	"github.com/gogo/protobuf/protoc-gen-gogo/generator"
+	"limbo.services/protobuf/gogoproto"
+	"limbo.services/protobuf/plugin/testgen"
+	"limbo.services/protobuf/protoc-gen-gogo/generator"
 )
 
 type test struct {
@@ -45,7 +45,7 @@ func (p *test) Generate(imports generator.PluginImports, file *generator.FileDes
 	randPkg := imports.NewImport("math/rand")
 	timePkg := imports.NewImport("time")
 	testingPkg := imports.NewImport("testing")
-	protoPkg := imports.NewImport("github.com/gogo/protobuf/proto")
+	protoPkg := imports.NewImport("limbo.services/protobuf/proto")
 	if !gogoproto.ImportsGoGoProto(file.FileDescriptorProto) {
 		protoPkg = imports.NewImport("github.com/golang/protobuf/proto")
 	}

@@ -19,16 +19,16 @@
 */
 package test
 
-import proto "github.com/gogo/protobuf/proto"
+import proto "limbo.services/protobuf/proto"
 import fmt "fmt"
 import math "math"
-import _ "github.com/gogo/protobuf/gogoproto"
+import _ "limbo.services/protobuf/gogoproto"
 
-import github_com_gogo_protobuf_test "github.com/gogo/protobuf/test"
-import github_com_gogo_protobuf_test_custom "github.com/gogo/protobuf/test/custom"
+import github_com_gogo_protobuf_test "limbo.services/protobuf/test"
+import github_com_gogo_protobuf_test_custom "limbo.services/protobuf/test/custom"
 
-import github_com_gogo_protobuf_protoc_gen_gogo_descriptor "github.com/gogo/protobuf/protoc-gen-gogo/descriptor"
-import github_com_gogo_protobuf_proto "github.com/gogo/protobuf/proto"
+import github_com_gogo_protobuf_protoc_gen_gogo_descriptor "limbo.services/protobuf/protoc-gen-gogo/descriptor"
+import github_com_gogo_protobuf_proto "limbo.services/protobuf/proto"
 import compress_gzip "compress/gzip"
 import bytes "bytes"
 import io_ioutil "io/ioutil"
@@ -52,7 +52,7 @@ const _ = proto.GoGoProtoPackageIsVersion1
 type A struct {
 	Description      string                             `protobuf:"bytes,1,opt,name=Description,json=description" json:"Description"`
 	Number           int64                              `protobuf:"varint,2,opt,name=Number,json=number" json:"Number"`
-	Id               github_com_gogo_protobuf_test.Uuid `protobuf:"bytes,3,opt,name=Id,json=id,customtype=github.com/gogo/protobuf/test.Uuid" json:"Id"`
+	Id               github_com_gogo_protobuf_test.Uuid `protobuf:"bytes,3,opt,name=Id,json=id,customtype=limbo.services/protobuf/test.Uuid" json:"Id"`
 	XXX_unrecognized []byte                             `json:"-"`
 }
 
@@ -62,7 +62,7 @@ func (*A) Descriptor() ([]byte, []int) { return fileDescriptorExample, []int{0} 
 
 type B struct {
 	A                `protobuf:"bytes,1,opt,name=A,json=a,embedded=A" json:"A"`
-	G                []github_com_gogo_protobuf_test_custom.Uint128 `protobuf:"bytes,2,rep,name=G,json=g,customtype=github.com/gogo/protobuf/test/custom.Uint128" json:"G"`
+	G                []github_com_gogo_protobuf_test_custom.Uint128 `protobuf:"bytes,2,rep,name=G,json=g,customtype=limbo.services/protobuf/test/custom.Uint128" json:"G"`
 	XXX_unrecognized []byte                                         `json:"-"`
 }
 

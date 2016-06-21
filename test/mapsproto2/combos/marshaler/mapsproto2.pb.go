@@ -15,13 +15,13 @@ It has these top-level messages:
 */
 package proto2_maps
 
-import proto "github.com/gogo/protobuf/proto"
+import proto "limbo.services/protobuf/proto"
 import fmt "fmt"
 import math "math"
-import _ "github.com/gogo/protobuf/gogoproto"
+import _ "limbo.services/protobuf/gogoproto"
 
-import github_com_gogo_protobuf_protoc_gen_gogo_descriptor "github.com/gogo/protobuf/protoc-gen-gogo/descriptor"
-import github_com_gogo_protobuf_proto "github.com/gogo/protobuf/proto"
+import github_com_gogo_protobuf_protoc_gen_gogo_descriptor "limbo.services/protobuf/protoc-gen-gogo/descriptor"
+import github_com_gogo_protobuf_proto "limbo.services/protobuf/proto"
 import compress_gzip "compress/gzip"
 import bytes "bytes"
 import io_ioutil "io/ioutil"
@@ -31,7 +31,7 @@ import strconv "strconv"
 import strings "strings"
 import sort "sort"
 import reflect "reflect"
-import github_com_gogo_protobuf_sortkeys "github.com/gogo/protobuf/sortkeys"
+import github_com_gogo_protobuf_sortkeys "limbo.services/protobuf/sortkeys"
 
 import errors "errors"
 

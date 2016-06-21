@@ -34,10 +34,10 @@ package proto_test
 import (
 	"testing"
 
-	"github.com/gogo/protobuf/proto"
+	"limbo.services/protobuf/proto"
 
-	proto3pb "github.com/gogo/protobuf/proto/proto3_proto"
-	pb "github.com/gogo/protobuf/proto/testdata"
+	proto3pb "limbo.services/protobuf/proto/proto3_proto"
+	pb "limbo.services/protobuf/proto/testdata"
 )
 
 var cloneTestMessage = &pb.MyMessage{

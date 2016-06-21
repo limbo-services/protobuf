@@ -34,9 +34,9 @@ package proto_test
 import (
 	"testing"
 
-	"github.com/gogo/protobuf/proto"
-	pb "github.com/gogo/protobuf/proto/proto3_proto"
-	tpb "github.com/gogo/protobuf/proto/testdata"
+	"limbo.services/protobuf/proto"
+	pb "limbo.services/protobuf/proto/proto3_proto"
+	tpb "limbo.services/protobuf/proto/testdata"
 )
 
 func TestProto3ZeroValues(t *testing.T) {

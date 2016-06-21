@@ -1,5 +1,5 @@
 // Copyright (c) 2013, Vastech SA (PTY) LTD. All rights reserved.
-// http://github.com/gogo/protobuf/gogoproto
+// http://limbo.services/protobuf/gogoproto
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
@@ -34,10 +34,10 @@ import (
 	"path"
 	"strings"
 
-	"github.com/gogo/protobuf/gogoproto"
-	"github.com/gogo/protobuf/proto"
-	descriptor "github.com/gogo/protobuf/protoc-gen-gogo/descriptor"
-	plugin "github.com/gogo/protobuf/protoc-gen-gogo/plugin"
+	"limbo.services/protobuf/gogoproto"
+	"limbo.services/protobuf/proto"
+	descriptor "limbo.services/protobuf/protoc-gen-gogo/descriptor"
+	plugin "limbo.services/protobuf/protoc-gen-gogo/plugin"
 )
 
 func (d *FileDescriptor) Messages() []*Descriptor {

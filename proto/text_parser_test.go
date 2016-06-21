@@ -36,9 +36,9 @@ import (
 	"reflect"
 	"testing"
 
-	. "github.com/gogo/protobuf/proto"
-	proto3pb "github.com/gogo/protobuf/proto/proto3_proto"
-	. "github.com/gogo/protobuf/proto/testdata"
+	. "limbo.services/protobuf/proto"
+	proto3pb "limbo.services/protobuf/proto/proto3_proto"
+	. "limbo.services/protobuf/proto/testdata"
 )
 
 type UnmarshalTextTest struct {

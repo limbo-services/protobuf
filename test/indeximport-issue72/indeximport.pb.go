@@ -13,11 +13,11 @@
 */
 package indeximport
 
-import proto "github.com/gogo/protobuf/proto"
+import proto "limbo.services/protobuf/proto"
 import fmt "fmt"
 import math "math"
-import index "github.com/gogo/protobuf/test/indeximport-issue72/index"
-import _ "github.com/gogo/protobuf/gogoproto"
+import index "limbo.services/protobuf/test/indeximport-issue72/index"
+import _ "limbo.services/protobuf/gogoproto"
 
 import bytes "bytes"
 

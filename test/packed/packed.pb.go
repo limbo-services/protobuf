@@ -16,10 +16,10 @@
 */
 package packed
 
-import proto "github.com/gogo/protobuf/proto"
+import proto "limbo.services/protobuf/proto"
 import fmt "fmt"
 import math "math"
-import _ "github.com/gogo/protobuf/gogoproto"
+import _ "limbo.services/protobuf/gogoproto"
 
 import io "io"
 

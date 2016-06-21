@@ -44,8 +44,8 @@ import (
 	"testing"
 	"time"
 
-	. "github.com/gogo/protobuf/proto"
-	. "github.com/gogo/protobuf/proto/testdata"
+	. "limbo.services/protobuf/proto"
+	. "limbo.services/protobuf/proto/testdata"
 )
 
 var globalO *Buffer

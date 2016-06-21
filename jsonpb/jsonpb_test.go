@@ -35,9 +35,9 @@ import (
 	"reflect"
 	"testing"
 
-	pb "github.com/gogo/protobuf/jsonpb/jsonpb_test_proto"
-	"github.com/gogo/protobuf/proto"
-	proto3pb "github.com/gogo/protobuf/proto/proto3_proto"
+	pb "limbo.services/protobuf/jsonpb/jsonpb_test_proto"
+	"limbo.services/protobuf/proto"
+	proto3pb "limbo.services/protobuf/proto/proto3_proto"
 )
 
 var (

@@ -1,5 +1,5 @@
 // Copyright (c) 2013, Vastech SA (PTY) LTD. All rights reserved.
-// http://github.com/gogo/protobuf
+// http://limbo.services/protobuf
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
@@ -48,11 +48,11 @@ And a benchmark given it is enabled using one of the following extensions:
 
 Let us look at:
 
-  github.com/gogo/protobuf/test/example/example.proto
+  limbo.services/protobuf/test/example/example.proto
 
 Btw all the output can be seen at:
 
-  github.com/gogo/protobuf/test/example/*
+  limbo.services/protobuf/test/example/*
 
 The following message:
 
@@ -61,7 +61,7 @@ The following message:
   message B {
 	option (gogoproto.description) = true;
 	optional A A = 1 [(gogoproto.nullable) = false, (gogoproto.embed) = true];
-	repeated bytes G = 2 [(gogoproto.customtype) = "github.com/gogo/protobuf/test/custom.Uint128", (gogoproto.nullable) = false];
+	repeated bytes G = 2 [(gogoproto.customtype) = "limbo.services/protobuf/test/custom.Uint128", (gogoproto.nullable) = false];
   }
 
 given to the size plugin, will generate the following code:
@@ -122,11 +122,11 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/gogo/protobuf/gogoproto"
-	"github.com/gogo/protobuf/proto"
-	descriptor "github.com/gogo/protobuf/protoc-gen-gogo/descriptor"
-	"github.com/gogo/protobuf/protoc-gen-gogo/generator"
-	"github.com/gogo/protobuf/vanity"
+	"limbo.services/protobuf/gogoproto"
+	"limbo.services/protobuf/proto"
+	descriptor "limbo.services/protobuf/protoc-gen-gogo/descriptor"
+	"limbo.services/protobuf/protoc-gen-gogo/generator"
+	"limbo.services/protobuf/vanity"
 )
 
 type size struct {
@@ -419,12 +419,30 @@ func (p *size) generateField(proto3 bool, file *generator.FileDescriptor, messag
 		} else if repeated {
 			p.P(`for _, e := range m.`, fieldname, ` { `)
 			p.In()
-			p.P(`l=e.`, sizeName, `()`)
+			if gogoproto.IsCastType(field) {
+				prototyp := p.TypeName(p.ObjectNamed(field.GetTypeName()))
+				if nullable {
+					p.P(`l=((*`, prototyp, `)(e)).`, sizeName, `()`)
+				} else {
+					p.P(`l=((*`, prototyp, `)(&e)).`, sizeName, `()`)
+				}
+			} else {
+				p.P(`l=e.Size()`)
+			}
 			p.P(`n+=`, strconv.Itoa(key), `+l+sov`, p.localName, `(uint64(l))`)
 			p.Out()
 			p.P(`}`)
 		} else {
-			p.P(`l=m.`, fieldname, `.`, sizeName, `()`)
+			if gogoproto.IsCastType(field) {
+				prototyp := p.TypeName(p.ObjectNamed(field.GetTypeName()))
+				if nullable {
+					p.P(`l=((*`, prototyp, `)(m.`, fieldname, `)).`, sizeName, `()`)
+				} else {
+					p.P(`l=((*`, prototyp, `)(&m.`, fieldname, `)).`, sizeName, `()`)
+				}
+			} else {
+				p.P(`l=m.`, fieldname, `.Size()`)
+			}
 			p.P(`n+=`, strconv.Itoa(key), `+l+sov`, p.localName, `(uint64(l))`)
 		}
 	case descriptor.FieldDescriptorProto_TYPE_BYTES:
@@ -500,7 +518,7 @@ func (p *size) Generate(file *generator.FileDescriptor) {
 	p.PluginImports = generator.NewPluginImports(p.Generator)
 	p.atleastOne = false
 	p.localName = generator.FileName(file)
-	protoPkg := p.NewImport("github.com/gogo/protobuf/proto")
+	protoPkg := p.NewImport("limbo.services/protobuf/proto")
 	if !gogoproto.ImportsGoGoProto(file.FileDescriptorProto) {
 		protoPkg = p.NewImport("github.com/golang/protobuf/proto")
 	}

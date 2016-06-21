@@ -1,7 +1,7 @@
 // Extensions for Protocol Buffers to create more go like structures.
 //
 // Copyright (c) 2013, Vastech SA (PTY) LTD. All rights reserved.
-// http://github.com/gogo/protobuf/gogoproto
+// http://limbo.services/protobuf/gogoproto
 //
 // Go support for Protocol Buffers - Google's data interchange format
 //
@@ -58,10 +58,10 @@ import (
 	"unicode"
 	"unicode/utf8"
 
-	"github.com/gogo/protobuf/gogoproto"
-	"github.com/gogo/protobuf/proto"
-	descriptor "github.com/gogo/protobuf/protoc-gen-gogo/descriptor"
-	plugin "github.com/gogo/protobuf/protoc-gen-gogo/plugin"
+	"limbo.services/protobuf/gogoproto"
+	"limbo.services/protobuf/proto"
+	descriptor "limbo.services/protobuf/protoc-gen-gogo/descriptor"
+	plugin "limbo.services/protobuf/protoc-gen-gogo/plugin"
 )
 
 // generatedCodeVersion indicates a version of the generated code.
@@ -1130,6 +1130,10 @@ func (g *Generator) P(str ...interface{}) {
 
 // addInitf stores the given statement to be printed inside the file's init function.
 // The statement is given as a format specifier and arguments.
+func (g *Generator) AddInitf(stmt string, a ...interface{}) {
+	g.addInitf(stmt, a...)
+}
+
 func (g *Generator) addInitf(stmt string, a ...interface{}) {
 	g.init = append(g.init, fmt.Sprintf(stmt, a...))
 }
@@ -1237,10 +1241,11 @@ func (g *Generator) generate(file *FileDescriptor) {
 	for _, ext := range g.file.ext {
 		g.generateExtension(ext)
 	}
-	g.generateInitFunction()
 
 	// Run the plugins before the imports so we know which imports are necessary.
 	g.runPlugins(file)
+
+	g.generateInitFunction()
 
 	g.generateFileDescriptor(file)
 
@@ -1378,7 +1383,7 @@ func (g *Generator) generateImports() {
 	// do, which is tricky when there's a plugin, just import it and
 	// reference it later. The same argument applies to the fmt and math packages.
 	if gogoproto.ImportsGoGoProto(g.file.FileDescriptorProto) {
-		g.PrintImport(g.Pkg["proto"], g.ImportPrefix+"github.com/gogo/protobuf/proto")
+		g.PrintImport(g.Pkg["proto"], g.ImportPrefix+"limbo.services/protobuf/proto")
 	} else {
 		g.PrintImport(g.Pkg["proto"], g.ImportPrefix+"github.com/golang/protobuf/proto")
 	}
@@ -3048,6 +3053,17 @@ func CamelCase(s string) string {
 			c ^= ' ' // Make it a capital letter.
 		}
 		t = append(t, c) // Guaranteed not lower case.
+
+		// map (^|_)id($|_) to ID
+		if c == 'I' && i+2 == len(s) && s[i+1] == 'd' {
+			t = append(t, 'D')
+			i++
+		}
+		if c == 'I' && i+2 < len(s) && s[i+1] == 'd' && s[i+2] == '_' {
+			t = append(t, 'D')
+			i++
+		}
+
 		// Accept lower case sequence that follows.
 		for i+1 < len(s) && isASCIILower(s[i+1]) {
 			i++

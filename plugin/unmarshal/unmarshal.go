@@ -1,5 +1,5 @@
 // Copyright (c) 2013, Vastech SA (PTY) LTD. All rights reserved.
-// http://github.com/gogo/protobuf
+// http://limbo.services/protobuf
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
@@ -55,11 +55,11 @@ And benchmarks given it is enabled using one of the following extensions:
 
 Let us look at:
 
-  github.com/gogo/protobuf/test/example/example.proto
+  limbo.services/protobuf/test/example/example.proto
 
 Btw all the output can be seen at:
 
-  github.com/gogo/protobuf/test/example/*
+  limbo.services/protobuf/test/example/*
 
 The following message:
 
@@ -68,7 +68,7 @@ The following message:
   message B {
 	option (gogoproto.description) = true;
 	optional A A = 1 [(gogoproto.nullable) = false, (gogoproto.embed) = true];
-	repeated bytes G = 2 [(gogoproto.customtype) = "github.com/gogo/protobuf/test/custom.Uint128", (gogoproto.nullable) = false];
+	repeated bytes G = 2 [(gogoproto.customtype) = "limbo.services/protobuf/test/custom.Uint128", (gogoproto.nullable) = false];
   }
 
 given to the unmarshal plugin, will generate the following code:
@@ -177,10 +177,10 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/gogo/protobuf/gogoproto"
-	"github.com/gogo/protobuf/proto"
-	descriptor "github.com/gogo/protobuf/protoc-gen-gogo/descriptor"
-	"github.com/gogo/protobuf/protoc-gen-gogo/generator"
+	"limbo.services/protobuf/gogoproto"
+	"limbo.services/protobuf/proto"
+	descriptor "limbo.services/protobuf/protoc-gen-gogo/descriptor"
+	"limbo.services/protobuf/protoc-gen-gogo/generator"
 )
 
 type unmarshal struct {
@@ -669,8 +669,13 @@ func (p *unmarshal) field(file *generator.FileDescriptor, msg *generator.Descrip
 		p.Out()
 		p.P(`}`)
 		if oneof {
+			casttyp := "v"
+			if gogoproto.IsCastType(field) {
+				prototyp := p.TypeName(p.ObjectNamed(field.GetTypeName()))
+				casttyp = "((*" + prototyp + ")(v))"
+			}
 			p.P(`v := &`, msgname, `{}`)
-			p.P(`if err := v.Unmarshal(data[iNdEx:postIndex]); err != nil {`)
+			p.P(`if err := `, casttyp, `.Unmarshal(data[iNdEx:postIndex]); err != nil {`)
 			p.In()
 			p.P(`return err`)
 			p.Out()
@@ -721,29 +726,55 @@ func (p *unmarshal) field(file *generator.FileDescriptor, msg *generator.Descrip
 			}
 			p.P(s, ` = `, v)
 		} else if repeated {
-			if nullable {
-				p.P(`m.`, fieldname, ` = append(m.`, fieldname, `, &`, msgname, `{})`)
-			} else {
-				p.P(`m.`, fieldname, ` = append(m.`, fieldname, `, `, msgname, `{})`)
+			casttyp := "m." + fieldname + "[len(m." + fieldname + ")-1]"
+			castmsgname := msgname
+			if gogoproto.IsCastType(field) {
+				prototyp := p.TypeName(p.ObjectNamed(field.GetTypeName()))
+				castmsgname, _ = p.GoType(msg, field)
+				castmsgname = strings.TrimPrefix(castmsgname, "[]")
+				castmsgname = strings.TrimPrefix(castmsgname, "*")
+				if nullable {
+					casttyp = "((*" + prototyp + ")(" + casttyp + "))"
+				} else {
+					casttyp = "((*" + prototyp + ")(&" + casttyp + "))"
+				}
 			}
-			p.P(`if err := m.`, fieldname, `[len(m.`, fieldname, `)-1].Unmarshal(data[iNdEx:postIndex]); err != nil {`)
+			if nullable {
+				p.P(`m.`, fieldname, ` = append(m.`, fieldname, `, &`, castmsgname, `{})`)
+			} else {
+				p.P(`m.`, fieldname, ` = append(m.`, fieldname, `, `, castmsgname, `{})`)
+			}
+			p.P(`if err := `, casttyp, `.Unmarshal(data[iNdEx:postIndex]); err != nil {`)
 			p.In()
 			p.P(`return err`)
 			p.Out()
 			p.P(`}`)
 		} else if nullable {
+			casttyp := "m." + fieldname
+			castmsgname := msgname
+			if gogoproto.IsCastType(field) {
+				prototyp := p.TypeName(p.ObjectNamed(field.GetTypeName()))
+				casttyp = "((*" + prototyp + ")(" + casttyp + "))"
+				castmsgname, _ = p.GoType(msg, field)
+				castmsgname = strings.TrimPrefix(castmsgname, "*")
+			}
 			p.P(`if m.`, fieldname, ` == nil {`)
 			p.In()
-			p.P(`m.`, fieldname, ` = &`, msgname, `{}`)
+			p.P(`m.`, fieldname, ` = &`, castmsgname, `{}`)
 			p.Out()
 			p.P(`}`)
-			p.P(`if err := m.`, fieldname, `.Unmarshal(data[iNdEx:postIndex]); err != nil {`)
+			p.P(`if err := `, casttyp, `.Unmarshal(data[iNdEx:postIndex]); err != nil {`)
 			p.In()
 			p.P(`return err`)
 			p.Out()
 			p.P(`}`)
 		} else {
-			p.P(`if err := m.`, fieldname, `.Unmarshal(data[iNdEx:postIndex]); err != nil {`)
+			casttyp := "m." + fieldname
+			if gogoproto.IsCastType(field) {
+				prototyp := p.TypeName(p.ObjectNamed(field.GetTypeName()))
+				casttyp = "((*" + prototyp + ")(&" + casttyp + "))"
+			}
+			p.P(`if err := `, casttyp, `.Unmarshal(data[iNdEx:postIndex]); err != nil {`)
 			p.In()
 			p.P(`return err`)
 			p.Out()
@@ -969,7 +1000,7 @@ func (p *unmarshal) Generate(file *generator.FileDescriptor) {
 	p.mathPkg = p.NewImport("math")
 	p.unsafePkg = p.NewImport("unsafe")
 	fmtPkg := p.NewImport("fmt")
-	protoPkg := p.NewImport("github.com/gogo/protobuf/proto")
+	protoPkg := p.NewImport("limbo.services/protobuf/proto")
 	if !gogoproto.ImportsGoGoProto(file.FileDescriptorProto) {
 		protoPkg = p.NewImport("github.com/golang/protobuf/proto")
 	}

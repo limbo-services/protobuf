@@ -100,7 +100,7 @@ The resulting file, test.pb.go, is:
 
 	package example
 
-	import proto "github.com/gogo/protobuf/proto"
+	import proto "limbo.services/protobuf/proto"
 	import math "math"
 
 	type FOO int32
@@ -227,7 +227,7 @@ To create and play with a Test object:
 	import (
 		"log"
 
-		"github.com/gogo/protobuf/proto"
+		"limbo.services/protobuf/proto"
 		pb "./example.pb"
 	)
 

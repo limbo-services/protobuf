@@ -1,7 +1,7 @@
 // Extensions for Protocol Buffers to create more go like structures.
 //
 // Copyright (c) 2015, Vastech SA (PTY) LTD. All rights reserved.
-// http://github.com/gogo/protobuf/gogoproto
+// http://limbo.services/protobuf/gogoproto
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
@@ -29,8 +29,8 @@
 package main
 
 import (
-	"github.com/gogo/protobuf/vanity"
-	"github.com/gogo/protobuf/vanity/command"
+	"limbo.services/protobuf/vanity"
+	"limbo.services/protobuf/vanity/command"
 )
 
 func main() {

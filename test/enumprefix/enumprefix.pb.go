@@ -13,11 +13,11 @@
 */
 package enumprefix
 
-import proto "github.com/gogo/protobuf/proto"
+import proto "limbo.services/protobuf/proto"
 import fmt "fmt"
 import math "math"
-import test "github.com/gogo/protobuf/test"
-import _ "github.com/gogo/protobuf/gogoproto"
+import test "limbo.services/protobuf/test"
+import _ "limbo.services/protobuf/gogoproto"
 
 // Reference imports to suppress errors if they are not otherwise used.
 var _ = proto.Marshal

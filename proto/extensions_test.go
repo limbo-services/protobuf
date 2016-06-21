@@ -37,8 +37,8 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/gogo/protobuf/proto"
-	pb "github.com/gogo/protobuf/proto/testdata"
+	"limbo.services/protobuf/proto"
+	pb "limbo.services/protobuf/proto/testdata"
 )
 
 func TestGetExtensionsWithMissingExtensions(t *testing.T) {

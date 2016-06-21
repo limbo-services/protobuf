@@ -23,13 +23,13 @@
 */
 package unrecognized
 
-import proto "github.com/gogo/protobuf/proto"
+import proto "limbo.services/protobuf/proto"
 import fmt "fmt"
 import math "math"
-import _ "github.com/gogo/protobuf/gogoproto"
+import _ "limbo.services/protobuf/gogoproto"
 
-import github_com_gogo_protobuf_protoc_gen_gogo_descriptor "github.com/gogo/protobuf/protoc-gen-gogo/descriptor"
-import github_com_gogo_protobuf_proto "github.com/gogo/protobuf/proto"
+import github_com_gogo_protobuf_protoc_gen_gogo_descriptor "limbo.services/protobuf/protoc-gen-gogo/descriptor"
+import github_com_gogo_protobuf_proto "limbo.services/protobuf/proto"
 import compress_gzip "compress/gzip"
 import bytes "bytes"
 import io_ioutil "io/ioutil"

@@ -13,7 +13,7 @@ It has these top-level messages:
 */
 package nopackage
 
-import proto "github.com/gogo/protobuf/proto"
+import proto "limbo.services/protobuf/proto"
 import fmt "fmt"
 import math "math"
 

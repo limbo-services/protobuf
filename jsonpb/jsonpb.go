@@ -48,7 +48,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/gogo/protobuf/proto"
+	"limbo.services/protobuf/proto"
 )
 
 // Marshaler is a configurable object for converting between

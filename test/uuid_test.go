@@ -1,7 +1,7 @@
 package test
 
 import (
-	"github.com/gogo/protobuf/proto"
+	"limbo.services/protobuf/proto"
 	"testing"
 )
 
